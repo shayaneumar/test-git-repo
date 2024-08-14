@@ -17,8 +17,7 @@
     "test:unit": "cd ./shell && npm test",
     "test:e2e:aws": "cd ./e2e && cross-env PLAYWRIGHT_BASE_URL='https://hydra-stage.dev.mitel.io' npm test -- tests/basic",
     "test:e2e:local": "cd ./e2e && cross-env PLAYWRIGHT_BASE_URL='https://localhost:4200' npm test -- tests/basic",
-    "test:e2e-allure-generate": "cd ./e2e && npm run e2e-allure-generate",
-    "postinstall": "echo Installing dependencies for shell && cd shell && npm instal && echo Installing dependencies for remote-templates && cd ../remote-templates/remote && npm install"
+    "test:e2e-allure-generate": "cd ./e2e && npm run e2e-allure-generate"
   },
   "devDependencies": {
     "@angular-eslint/eslint-plugin-template": "^18.2.0",
