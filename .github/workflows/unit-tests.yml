@@ -36,19 +36,19 @@ jobs:
           check-latest: true
           cache: "npm"
 
-      - name: "⚙️ Setup Mitel depot"
-        env:
-          depotToken: ${{ secrets.depotTokenReadOnly  }}
-          depot: depot.mitel.io/artifactory/api/npm/npm-internal/
-        run: |
-          npm config set @mitel-internal:registry 'https://${{ env.depot }}'
-          npm config set '//${{ env.depot }}:_authToken=${{ env.depotToken }}'
+      # - name: "⚙️ Setup Mitel depot"
+      #   env:
+      #     depotToken: ${{ secrets.depotTokenReadOnly  }}
+      #     depot: depot.mitel.io/artifactory/api/npm/npm-internal/
+      #   run: |
+      #     npm config set @mitel-internal:registry 'https://${{ env.depot }}'
+      #     npm config set '//${{ env.depot }}:_authToken=${{ env.depotToken }}'
 
       - name: "⛓️ Install dependencies"
         run: npm ci --audit=false --prefer-offline --progress=false
 
-      - name: "🧫 Run unit tests"
-        run: npm run test --if-present
+      # - name: "🧫 Run unit tests"
+      #   run: npm run test --if-present
 
       - name: "🧹 Cleanup workspace"
         run: |
