@@ -21,10 +21,6 @@ jobs:
   unit-tests:
     name: "🛠️ Unit Tests"
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        # Default for all run steps
-        working-directory: shell
     steps:
       - name: "☁️ Checkout repository"
         uses: actions/checkout@v4
