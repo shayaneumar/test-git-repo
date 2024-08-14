@@ -1,0 +1,40 @@
+# This workflow will run when changes are pushed to main
+name: Push Check
+
+# Controls when the action will run.
+on:
+  push:
+    branches:
+      - develop
+      - master
+
+  # Allows you to run this workflow manually from the Actions Tab
+  workflow_dispatch: {}
+
+# Cancel running workflows (this replaces the old cancel-workflow.yml script)
+concurrency:
+  group: on_push-group
+  cancel-in-progress: true
+
+jobs:
+  lint-code:
+    name: "▶️ actions"
+    uses: ./.github/workflows/lint-code.yml
+    secrets:
+      depotTokenReadOnly: ${{ secrets.depotTokenReadOnly }}
+
+  build-code:
+    name: "▶️ actions"
+    needs:
+      - lint-code
+    uses: ./.github/workflows/build-code.yml
+    secrets:
+      depotTokenReadOnly: ${{ secrets.depotTokenReadOnly }}
+
+  unit-tests:
+    name: "▶️ actions"
+    needs:
+      - build-code
+    uses: ./.github/workflows/unit-tests.yml
+    secrets:
+      depotTokenReadOnly: ${{ secrets.depotTokenReadOnly }}
