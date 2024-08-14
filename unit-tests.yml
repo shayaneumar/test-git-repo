@@ -1,0 +1,56 @@
+# This workflows runs the unit tests of the project
+name: Unit Tests
+
+# Controls when the action will run.
+on:
+  # Allows you to call this workflow from other workflows
+  workflow_call:
+    secrets:
+      depotTokenReadOnly:
+        required: true
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch: {}
+
+# Cancel running workflows (this replaces the old cancel-workflow.yml script)
+concurrency:
+  group: unit-tests-group
+  cancel-in-progress: true
+
+jobs:
+  unit-tests:
+    name: "🛠️ Unit Tests"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        # Default for all run steps
+        working-directory: shell
+    steps:
+      - name: "☁️ Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "⚙️ Use Node.js"
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          check-latest: true
+          cache: "npm"
+
+      - name: "⚙️ Setup Mitel depot"
+        env:
+          depotToken: ${{ secrets.depotTokenReadOnly  }}
+          depot: depot.mitel.io/artifactory/api/npm/npm-internal/
+        run: |
+          npm config set @mitel-internal:registry 'https://${{ env.depot }}'
+          npm config set '//${{ env.depot }}:_authToken=${{ env.depotToken }}'
+
+      - name: "⛓️ Install dependencies"
+        run: npm ci --audit=false --prefer-offline --progress=false
+
+      - name: "🧫 Run unit tests"
+        run: npm run test --if-present
+
+      - name: "🧹 Cleanup workspace"
+        run: |
+          echo "🧹 Cleaning working directory..."
+          rm -rf ./*
