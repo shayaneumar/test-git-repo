@@ -21,7 +21,7 @@ jobs:
   build:
     name: "🛠️ Build"
     runs-on: ubuntu-latest
-    defaults:
+    # defaults:
       # run:
       #   # Default for all run steps
       #   working-directory: shell
