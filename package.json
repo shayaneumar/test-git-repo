@@ -1,0 +1,53 @@
+{
+  "name": "@mitel-internal/hydra-common-shell",
+  "version": "0.0.0700-SNAPSHOT",
+  "author": "Mitel",
+  "description": "Hydra Common Shell",
+  "type": "module",
+  "scripts": {
+    "lint": "npm run lint:stylelint && npm run lint:eslint",
+    "lint:markdown": "markdownlint -i '**/node_modules/**' --config .markdownlint.json ./*.md ./**/*.md ./**/**/*.md ./**/**/**/*.md ./**/**/**/**/*.md",
+    "lint:stylelint": "npx stylelint **/*.scss **/*.css",
+    "lint:eslint": "npx eslint --no-error-on-unmatched-pattern .",
+    "git:pre-commit": "npx lint-staged",
+    "git:pre-push": "npm run test:unit",
+    "prepare": "git config core.hooksPath .hooks",
+    "shell": "cd ./shell && npm run start",
+    "languages": "cd shell && npm run languages",
+    "test:unit": "cd ./shell && npm test",
+    "test:e2e:aws": "cd ./e2e && cross-env PLAYWRIGHT_BASE_URL='https://hydra-stage.dev.mitel.io' npm test -- tests/basic",
+    "test:e2e:local": "cd ./e2e && cross-env PLAYWRIGHT_BASE_URL='https://localhost:4200' npm test -- tests/basic",
+    "test:e2e-allure-generate": "cd ./e2e && npm run e2e-allure-generate",
+    "postinstall": "echo Installing dependencies for shell && cd shell && npm instal && echo Installing dependencies for remote-templates && cd ../remote-templates/remote && npm install"
+  },
+  "devDependencies": {
+    "@angular-eslint/eslint-plugin-template": "^18.2.0",
+    "@angular-eslint/template-parser": "^18.2.0",
+    "@eslint/compat": "^1.1.1",
+    "@stylistic/eslint-plugin": "2.6.2",
+    "angular-eslint": "^18.2.0",
+    "cross-env": "^7.0.3",
+    "eslint": "9.8.0",
+    "eslint-plugin-jsdoc": "50.0.0",
+    "eslint-plugin-jsonc": "2.16.0",
+    "eslint-plugin-playwright": "1.6.2",
+    "eslint-plugin-unicorn": "55.0.0",
+    "eslint-plugin-yml": "1.14.0",
+    "lint-staged": "15.2.8",
+    "markdownlint": "^0.34.0",
+    "markdownlint-cli": "^0.41.0",
+    "prettier": "^3.3.3",
+    "stylelint": "^16.8.1",
+    "stylelint-config-property-sort-order-smacss": "^10.0.0",
+    "stylelint-config-standard": "^36.0.1",
+    "stylelint-config-standard-scss": "^13.1.0",
+    "stylelint-no-unsupported-browser-features": "^8.0.1",
+    "stylelint-order": "^6.0.4",
+    "stylelint-use-logical-spec": "^5.0.1",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.0.1"
+  },
+  "overrides": {
+    "@typescript-eslint/utils": "^8.0.0-alpha.28"
+  }
+}
