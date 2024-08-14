@@ -1,0 +1,46 @@
+# This workflow runs on PR target
+name: PR check
+
+# Controls when the action will run.
+on:
+  # Trigger workflow for pull request
+  pull_request_target:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+    branches:
+      - develop
+      - master
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch: {}
+
+# Cancel running workflows (this replaces the old cancel-workflow.yml script)
+concurrency:
+  group: on_pr_target-group
+  cancel-in-progress: true
+
+jobs:
+  lint-code:
+    name: "▶️ actions"
+    uses: ./.github/workflows/lint-code.yml
+    secrets:
+      depotTokenReadOnly: ${{ secrets.depotTokenReadOnly }}
+
+  build-code:
+    name: "▶️ actions"
+    needs:
+      - lint-code
+    uses: ./.github/workflows/build-code.yml
+    secrets:
+      depotTokenReadOnly: ${{ secrets.depotTokenReadOnly }}
+
+  unit-tests:
+    name: "▶️ actions"
+    needs:
+      - build-code
+    uses: ./.github/workflows/unit-tests.yml
+    secrets:
+      depotTokenReadOnly: ${{ secrets.depotTokenReadOnly }}
